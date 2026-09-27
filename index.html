@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Md Farhan — ECE Engineer &amp; Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#12181f;
+    --line:#22303c;
+    --accent:#3fd6b5;
+    --accent-dim:#2a8f78;
+    --text:#e7edf3;
+    --muted:#8fa1ad;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit;margin:0;padding:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:80px;}
+  html,body{height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+  h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* circuit trace background */
+  .traces{position:fixed;inset:0;z-index:0;opacity:0.35;pointer-events:none;}
+
+  header{
+    position:sticky;top:0;z-index:10;
+    background:rgba(13,17,23,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{font-family:'Space Grotesk';font-size:18px;font-weight:700;color:var(--text);text-decoration:none;}
+  .brand span{color:var(--accent);}
+  .navlinks{display:flex;gap:28px;font-size:14px;color:var(--muted);}
+  .navlinks a{text-decoration:none;transition:color .15s;}
+  .navlinks a:hover{color:var(--accent);}
+
+  section{position:relative;z-index:1;padding:72px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+
+  /* hero */
+  .hero{padding-top:96px;padding-bottom:96px;}
+  .hero .eyebrow{color:var(--accent);font-size:14px;margin-bottom:14px;}
+  .hero h1{font-size:clamp(32px,5vw,52px);line-height:1.15;max-width:14ch;}
+  .hero p.lede{color:var(--muted);font-size:17px;max-width:52ch;margin-top:18px;}
+  .hero .links{display:flex;gap:16px;margin-top:32px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 20px;border-radius:2px;font-size:14px;font-weight:500;
+    text-decoration:none;border:1px solid var(--line);transition:border-color .15s,color .15s;
+  }
+  .btn.primary{background:var(--accent);color:#06110d;border-color:var(--accent);font-weight:600;}
+  .btn.primary:hover{background:var(--accent-dim);}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+  .stat-row{display:flex;gap:40px;margin-top:44px;flex-wrap:wrap;}
+  .stat-row div{border-left:2px solid var(--accent);padding-left:14px;}
+  .stat-num{font-family:'Space Grotesk';font-size:26px;font-weight:700;}
+  .stat-label{font-size:13px;color:var(--muted);}
+
+  /* section headings */
+  .kicker{display:flex;align-items:baseline;gap:14px;margin-bottom:36px;}
+  .kicker .idx{font-family:'IBM Plex Mono';color:var(--accent-dim);font-size:14px;}
+  .kicker h2{font-size:26px;}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;}
+  .about-grid p{color:var(--muted);margin-bottom:14px;}
+  .skill-block h4{font-size:13px;color:var(--accent);text-transform:none;margin-bottom:8px;font-family:'IBM Plex Mono';}
+  .skill-block ul{list-style:none;margin-bottom:22px;font-size:14px;color:var(--text);}
+  .skill-block li{padding:3px 0;border-bottom:1px dashed var(--line);}
+
+  /* projects */
+  .project{
+    border:1px solid var(--line);padding:26px 28px;margin-bottom:18px;
+    display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;
+    position:relative;
+  }
+  .project::before{content:"";position:absolute;left:-1px;top:0;bottom:0;width:2px;background:var(--line);}
+  .project:hover::before{background:var(--accent);}
+  .project h3{font-size:19px;margin-bottom:8px;}
+  .project p{color:var(--muted);font-size:14.5px;max-width:56ch;}
+  .project .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
+  .project .tags span{font-family:'IBM Plex Mono';font-size:12px;color:var(--accent-dim);border:1px solid var(--line);padding:3px 9px;}
+  .project .yr{font-family:'IBM Plex Mono';color:var(--muted);font-size:13px;white-space:nowrap;}
+
+  /* education */
+  .edu-item{display:flex;justify-content:space-between;gap:24px;padding:18px 0;border-bottom:1px dashed var(--line);}
+  .edu-item:last-child{border-bottom:none;}
+  .edu-item .school{font-weight:600;}
+  .edu-item .deg{color:var(--muted);font-size:14px;margin-top:2px;}
+  .edu-item .score{font-family:'IBM Plex Mono';color:var(--accent);font-size:14px;white-space:nowrap;}
+
+  /* contact */
+  .contact-grid{display:flex;gap:20px;flex-wrap:wrap;}
+  .contact-card{border:1px solid var(--line);padding:20px 24px;flex:1;min-width:200px;text-decoration:none;transition:border-color .15s;}
+  .contact-card:hover{border-color:var(--accent);}
+  .contact-card .lbl{font-family:'IBM Plex Mono';font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .contact-card .val{font-size:15px;}
+
+  footer{padding:28px 0 40px;text-align:center;color:var(--muted);font-size:13px;position:relative;z-index:1;}
+
+  @media(max-width:720px){
+    .navlinks{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .project{grid-template-columns:1fr;}
+    .stat-row{gap:28px;}
+  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<svg class="traces" viewBox="0 0 1000 1400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 120 H260 V300 H520" stroke="#22303c" stroke-width="1.5" fill="none"/>
+  <path d="M1000 60 H720 V220 H480 V420" stroke="#22303c" stroke-width="1.5" fill="none"/>
+  <path d="M0 720 H180 V900 H420 V1080" stroke="#22303c" stroke-width="1.5" fill="none"/>
+  <path d="M1000 1020 H760 V1200" stroke="#22303c" stroke-width="1.5" fill="none"/>
+  <circle cx="260" cy="120" r="3.5" fill="#3fd6b5" opacity="0.6"/>
+  <circle cx="520" cy="300" r="3.5" fill="#3fd6b5" opacity="0.6"/>
+  <circle cx="480" cy="420" r="3.5" fill="#3fd6b5" opacity="0.6"/>
+  <circle cx="180" cy="900" r="3.5" fill="#3fd6b5" opacity="0.6"/>
+  <circle cx="760" cy="1200" r="3.5" fill="#3fd6b5" opacity="0.6"/>
+</svg>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">Md<span>.</span>Farhan</a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap" id="top">
+
+  <section class="hero">
+    <div class="eyebrow mono">// ECE Engineering + Software Development</div>
+    <h1>Building systems from silicon to software.</h1>
+    <p class="lede">Third-year Electronics &amp; Communication Engineering student at Guru Ghasidas Vishwavidyalaya, working across embedded systems, web development, and data structures — headed toward a software development engineer role.</p>
+    <div class="links">
+      <a class="btn primary" href="mailto:farhanmd8265@gmail.com">Get in touch</a>
+      <a class="btn ghost" href="#projects">See projects ↓</a>
+    </div>
+    <div class="stat-row">
+      <div><div class="stat-num">8.67</div><div class="stat-label">CGPA, no backlogs</div></div>
+      <div><div class="stat-num">3+</div><div class="stat-label">Built projects</div></div>
+      <div><div class="stat-num">2026</div><div class="stat-label">Nexus-ASIC Club</div></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="kicker"><span class="idx mono">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p>I'm an ECE student who works comfortably on both sides of the stack — wiring up microcontrollers and motor drivers on one end, writing C++/Python on the other. I'm a Junior Executive at the NEXUS-ASIC Club, where I help run embedded-systems workshops and coordinate project work with other members.</p>
+        <p>Right now I'm sharpening my software fundamentals — data structures, algorithms, and system design — while continuing to build hardware projects that keep my electronics grounding sharp.</p>
+      </div>
+      <div>
+        <div class="skill-block">
+          <h4>LANGUAGES</h4>
+          <ul><li>C / C++</li><li>Python</li><li>HTML / CSS</li></ul>
+        </div>
+        <div class="skill-block">
+          <h4>TOOLS &amp; PLATFORMS</h4>
+          <ul><li>Git / GitHub</li><li>Arduino / ESP32</li><li>MATLAB</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="kicker"><span class="idx mono">02</span><h2>Projects</h2></div>
+
+    <div class="project">
+      <div>
+        <h3>Voice-Controlled Car</h3>
+        <p>A voice-controlled robotic car built on Arduino Uno, using an HC-05 Bluetooth module to wire up wireless motor control driven by smartphone voice commands.</p>
+        <div class="tags"><span>Arduino Uno</span><span>HC-05</span><span>Motor Driver</span></div>
+      </div>
+      <div class="yr">2025</div>
+    </div>
+
+    <div class="project">
+      <div>
+        <h3>Responsive Product Landing Page</h3>
+        <p>A responsive product landing page built with semantic HTML and CSS positioning — structured product, feature, navigation, and call-to-action sections in a clean, user-friendly layout.</p>
+        <div class="tags"><span>HTML</span><span>CSS</span><span>Responsive Design</span></div>
+      </div>
+      <div class="yr">2026</div>
+    </div>
+
+    <div class="project">
+      <div>
+        <h3>This Portfolio</h3>
+        <p>You're looking at it — a single-page site built to bring my hardware and software work into one place, with a layout, typography, and component system built from scratch.</p>
+        <div class="tags"><span>HTML</span><span>CSS</span></div>
+      </div>
+      <div class="yr">2026</div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="kicker"><span class="idx mono">03</span><h2>Education</h2></div>
+    <div class="edu-item">
+      <div><div class="school">Guru Ghasidas Vishwavidyalaya (A Central University), Bilaspur</div><div class="deg">B.Tech, Electronics &amp; Communication Engineering · 2024–2028</div></div>
+      <div class="score">CGPA 8.67</div>
+    </div>
+    <div class="edu-item">
+      <div><div class="school">CBSE Board — Senior Secondary</div><div class="deg">2022</div></div>
+      <div class="score">81.2%</div>
+    </div>
+    <div class="edu-item">
+      <div><div class="school">CBSE Board — Secondary</div><div class="deg">2020</div></div>
+      <div class="score">86.8%</div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="kicker"><span class="idx mono">04</span><h2>Contact</h2></div>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:farhanmd8265@gmail.com">
+        <div class="lbl mono">EMAIL</div><div class="val">farhanmd8265@gmail.com</div>
+      </a>
+      <a class="contact-card" href="tel:+918987248138">
+        <div class="lbl mono">PHONE</div><div class="val">+91 89872 48138</div>
+      </a>
+      <a class="contact-card" href="https://linkedin.com/in/md-farhan-99799b35a" target="_blank" rel="noopener">
+        <div class="lbl mono">LINKEDIN</div><div class="val">md-farhan-99799b35a</div>
+      </a>
+      <a class="contact-card" href="https://github.com/Farhanmd-eng" target="_blank" rel="noopener">
+        <div class="lbl mono">GITHUB</div><div class="val">Farhanmd-eng</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>Md Farhan — built for internship applications, 2026.</footer>
+
+</body>
+</html>
